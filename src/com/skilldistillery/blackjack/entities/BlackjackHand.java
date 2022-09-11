@@ -9,7 +9,7 @@ public class BlackjackHand extends Hand {
 	@Override
 	public int getHandValue() {
 		int sum = 0;
-		for (Card card : hand) {
+		for (Card card : this.hand) {
 			sum += card.getValue();
 		}
 		return sum;

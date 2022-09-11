@@ -2,6 +2,7 @@ package com.skilldistillery.blackjack.entities;
 
 public class Dealer extends Player {
 	private Hand hand;
+	private String won;
 
 	public Dealer(String name) {
 		super(name);
@@ -12,22 +13,33 @@ public class Dealer extends Player {
 		return deck.dealCard();
 	}
 
-	public void hit() {
-		hand.addCard(null);
+	public void hit(Card card) {
+		if (hand.getHandValue() < 17) {
+			hand.addCard(card);
+		}
+	}
+
+	public void stand() {
+		if (hand.getHandValue() > 17) {
+			hand.getHand();
+		}
 	}
 
 	public void shuffle(Deck deck) {
 		deck.shuffle();
-		
+
 	}
 
-	public Hand getHand() {
-		return hand;
+	public BlackjackHand getHand() {
+		return (BlackjackHand) hand;
 	}
 
-	public void setHand(Hand hand) {
+	public void setHand(BlackjackHand hand) {
 		this.hand = hand;
 	}
-	
-	
+
+	public void getWon() {
+
+	}
+
 }

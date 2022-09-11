@@ -17,11 +17,11 @@ public class Player {
 		hand.getHandValue();
 	}
 
-	public Hand getHand() {
-		return hand;
+	public BlackjackHand getHand() {
+		return (BlackjackHand) this.hand;
 	}
 
-	public void setHand(Hand hand) {
+	public void setHand(BlackjackHand hand) {
 		this.hand = hand;
 	}
 
@@ -32,5 +32,6 @@ public class Player {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
 
 }
