@@ -9,13 +9,25 @@ import com.skilldistillery.blackjack.entities.Player;
 
 public class BlackjackApp {
 
+	Scanner s = new Scanner(System.in);
+
 	public static void main(String[] args) {
 		BlackjackApp bja = new BlackjackApp();
 		bja.run();
 	}
 
 	public void run() {
-		newGame();
+		boolean playing = true;
+		while (playing) {
+			newGame();
+			s.nextLine();
+			System.out.println("Would you like to play again? type Y/N");
+			String userInput = s.nextLine();
+			if (!userInput.equalsIgnoreCase("Y")) {
+				playing = false;
+			}
+		}
+		System.out.println("Thank you for playing!");
 	}
 
 	public void newGame() {
@@ -35,7 +47,6 @@ public class BlackjackApp {
 		System.out.println(
 				"Your Starting Hand: " + player.getHand() + " Your hand value: " + player.getHand().getHandValue());
 
-		Scanner s = new Scanner(System.in);
 		boolean keepGoing = true;
 
 		while (keepGoing) {
@@ -48,25 +59,18 @@ public class BlackjackApp {
 			switch (userInput) {
 			case 1:
 				player.hit(dealer.dealCard(deck));
-				System.out.println(player.getHand() + " New Value: " + player.getHand().getHandValue());
-				if (player.getHand().isBust()) {
-					System.out.println("BUST");
-					keepGoing = false;
-					System.out.println("DEALER WON");
-				}
-				if (player.getHand().isBlackjack()) {
-					System.out.println("BLACKJACK!");
-					keepGoing = false;
-					System.out.println("YOU WON");
-				}
+				keepGoing = checkWinner(player.getHand(), dealer.getHand(), true);
 				break;
 			case 2:
-				keepGoing = false;
 				dealersTurns(player.getHand().getHandValue(), dealer, deck);
-				checkWinner(player.getHand(), dealer.getHand());
+				keepGoing = checkWinner(player.getHand(), dealer.getHand(), false);
 				break;
 			}
 		}
+		System.out.println(
+				"Your Hand: " + player.getHand().getHand() + "\n Your Hand Value: " + player.getHand().getHandValue());
+		System.out.println("Dealers Hand: " + dealer.getHand().getHand() + "\n Dealers Hand Value: "
+				+ dealer.getHand().getHandValue());
 
 	}
 
@@ -74,28 +78,35 @@ public class BlackjackApp {
 
 	}
 
-	public void checkWinner(BlackjackHand playerHand, BlackjackHand dealerHand) {
-		System.out.println("Your Hand: " + playerHand.getHand() + "\n Your Hand Value: " + playerHand.getHandValue());
-		System.out.println(
-				"Dealers Hand: " + dealerHand.getHand() + "\n Dealers Hand Value: " + dealerHand.getHandValue());
-		if (dealerHand.isBust()) {
-			System.out.println("DEALER BUST, YOU WON");
-		} else if (dealerHand.isBlackjack()) {
-			System.out.println("DEALER HIT A BLACK JACK, DEALER WON");
-		} else if (dealerHand.getHandValue() > playerHand.getHandValue()) {
-			System.out.println("DEALER WON");
-		}
-		if (dealerHand.getHandValue() > playerHand.getHandValue()) {
-			System.out.println("DEALER WON");
+	public boolean checkWinner(BlackjackHand playerHand, BlackjackHand dealerHand, boolean playerHitting) {
+		if (playerHitting) {
+			System.out.println("Dealers Starting Hand: [" + dealerHand.getHand().get(0) + "] [Hidden]");
+			System.out.println("Your Hand: " + playerHand + " Your hand value: " + playerHand.getHandValue());
+			if (playerHand.isBust()) {
+				System.out.println("BUST");
+				System.out.println("DEALER WON");
+				return false;
+			}
+			if (playerHand.isBlackjack()) {
+				System.out.println("BLACKJACK!");
+				System.out.println("YOU WON");
+				return false;
+			}
 		} else {
-			System.out.println("YOU WON");
+			if (dealerHand.isBust()) {
+				System.out.println("DEALER BUST, YOU WON");
+			} else if (dealerHand.isBlackjack()) {
+				System.out.println("DEALER HIT A BLACK JACK, DEALER WON");
+			} else if (dealerHand.getHandValue() > playerHand.getHandValue()) {
+				System.out.println("DEALER WON");
+			} else if (dealerHand.getHandValue() == playerHand.getHandValue()) {
+				System.out.println("TIE");
+			} else if (dealerHand.getHandValue() < playerHand.getHandValue()) {
+				System.out.println("YOU WON");
+			}
+			return false;
 		}
-		if (dealerHand.getHandValue() == playerHand.getHandValue()) {
-			System.out.println("TIE");
-		}
-		if (dealerHand.getHandValue() < playerHand.getHandValue()) {
-			System.out.println("YOU WON");
-		}
+		return true;
 
 	}
 
