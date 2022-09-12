@@ -32,8 +32,8 @@ public class BlackjackApp {
 
 	public void newGame() {
 		Deck deck = new Deck();
-		Player player = new Player("you");
-		Dealer dealer = new Dealer("Bob");
+		Player player = new Player();
+		Dealer dealer = new Dealer();
 
 		dealer.shuffle(deck);
 		dealer.dealCard(deck);
@@ -43,14 +43,17 @@ public class BlackjackApp {
 			player.getHand().addCard(dealer.dealCard(deck));
 		}
 
-		System.out.println("Dealers Starting Hand: [" + dealer.getHand().getHand().get(0) + "] [Hidden]");
-		System.out.println(
-				"Your Starting Hand: " + player.getHand() + " Your hand value: " + player.getHand().getHandValue());
+		System.out.println("Dealers Starting Hand: [" + dealer.getHand().getHand().get(0) + "] [Hidden]"
+				+ "\nDealers Starting Hand Value: " + dealer.getHand().getHand().get(0).getValue());
+		System.out.println();
+		System.out.println("Your Starting Hand: " + player.getHand() + "\nYour Starting Hand value: "
+				+ player.getHand().getHandValue());
 
 		boolean keepGoing = true;
 
 		while (keepGoing) {
 			int userInput = 0;
+			System.out.println();
 			System.out.println("Do you want to Hit or Stand?");
 			System.out.println("1. Hit");
 			System.out.println("2. Stand");
@@ -58,20 +61,18 @@ public class BlackjackApp {
 
 			switch (userInput) {
 			case 1:
+				System.out.println();
 				player.hit(dealer.dealCard(deck));
 				keepGoing = checkWinner(player.getHand(), dealer.getHand(), true);
 				break;
 			case 2:
+				System.out.println();
 				dealersTurns(player.getHand().getHandValue(), dealer, deck);
 				keepGoing = checkWinner(player.getHand(), dealer.getHand(), false);
 				break;
 			}
 		}
-		System.out.println(
-				"Your Hand: " + player.getHand().getHand() + "\n Your Hand Value: " + player.getHand().getHandValue());
-		System.out.println("Dealers Hand: " + dealer.getHand().getHand() + "\n Dealers Hand Value: "
-				+ dealer.getHand().getHandValue());
-
+		endGameHands(player.getHand(), dealer.getHand());
 	}
 
 	public void gameTurns() {
@@ -81,18 +82,23 @@ public class BlackjackApp {
 	public boolean checkWinner(BlackjackHand playerHand, BlackjackHand dealerHand, boolean playerHitting) {
 		if (playerHitting) {
 			System.out.println("Dealers Starting Hand: [" + dealerHand.getHand().get(0) + "] [Hidden]");
-			System.out.println("Your Hand: " + playerHand + " Your hand value: " + playerHand.getHandValue());
+			System.out.println("Your Hand: " + playerHand + " Your Hand Value: " + playerHand.getHandValue());
 			if (playerHand.isBust()) {
-				System.out.println("BUST");
-				System.out.println("DEALER WON");
+				System.out.println("------------------------");
+				System.out.println("\tWINNER\n------------------------");
+				System.out.println("YOU BUSTED, DEALER WON");
 				return false;
 			}
 			if (playerHand.isBlackjack()) {
-				System.out.println("BLACKJACK!");
-				System.out.println("YOU WON");
+				System.out.println("------------------------");
+				System.out.println("\tWINNER\n------------------------");
+				System.out.println("YOU HIT A BLACKJACK! YOU WON");
 				return false;
 			}
 		} else {
+			System.out.println("------------------------");
+			System.out.println("\tWINNER\n------------------------");
+
 			if (dealerHand.isBust()) {
 				System.out.println("DEALER BUST, YOU WON");
 			} else if (dealerHand.isBlackjack()) {
@@ -111,11 +117,23 @@ public class BlackjackApp {
 	}
 
 	public void dealersTurns(int playerHandValue, Dealer dealer, Deck deck) {
-		while (dealer.getHand().getHandValue() < 17 || dealer.getHand().getHandValue() < playerHandValue) {
+		while (dealer.getHand().getHandValue() < 17) {
 			dealer.getHand().addCard(dealer.dealCard(deck));
 			System.out.println(
 					"Dealers Hand: " + dealer.getHand() + " Dealers Value: " + dealer.getHand().getHandValue());
 		}
+	}
+
+	public void endGameHands(BlackjackHand playerHand, BlackjackHand dealerHand) {
+		System.out.println();
+		System.out.println("--------------------------------");
+		System.out.println("\tEnd Game Hands\n--------------------------------");
+		System.out.println("Your End Game Hand: " + playerHand.getHand() + "\nYour End Game Hand Value: "
+				+ playerHand.getHandValue());
+		System.out.println();
+		System.out.println("Dealers End Game Hand: " + dealerHand.getHand() + "\nDealers End Game Hand Value: "
+				+ dealerHand.getHandValue());
+		System.out.println("--------------------------------------");
 	}
 
 }

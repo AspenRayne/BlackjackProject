@@ -2,10 +2,8 @@ package com.skilldistillery.blackjack.entities;
 
 public class Player {
 	private Hand hand;
-	private String name;
 
-	public Player(String name) {
-		this.name = name;
+	public Player() {
 		hand = new BlackjackHand();
 	}
 
@@ -24,14 +22,5 @@ public class Player {
 	public void setHand(BlackjackHand hand) {
 		this.hand = hand;
 	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-	
 
 }

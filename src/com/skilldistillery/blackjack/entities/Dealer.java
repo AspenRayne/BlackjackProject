@@ -2,10 +2,8 @@ package com.skilldistillery.blackjack.entities;
 
 public class Dealer extends Player {
 	private Hand hand;
-	private String won;
 
-	public Dealer(String name) {
-		super(name);
+	public Dealer() {
 		hand = new BlackjackHand();
 	}
 
@@ -36,10 +34,6 @@ public class Dealer extends Player {
 
 	public void setHand(BlackjackHand hand) {
 		this.hand = hand;
-	}
-
-	public void getWon() {
-
 	}
 
 }
