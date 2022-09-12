@@ -43,11 +43,7 @@ public class BlackjackApp {
 			player.getHand().addCard(dealer.dealCard(deck));
 		}
 
-		System.out.println("Dealers Starting Hand: [" + dealer.getHand().getHand().get(0) + "] [Hidden]"
-				+ "\nDealers Starting Hand Value: " + dealer.getHand().getHand().get(0).getValue());
-		System.out.println();
-		System.out.println("Your Starting Hand: " + player.getHand() + "\nYour Starting Hand value: "
-				+ player.getHand().getHandValue());
+		checkWinner(player.getHand(), dealer.getHand(), true);
 
 		boolean keepGoing = true;
 
